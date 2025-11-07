@@ -6,10 +6,12 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Middleware
+// =====================
+// 🔹 CORS Configuration
+// =====================
 const allowedOrigins = [
   'https://nha-tro-two.vercel.app', // domain FE trên Vercel
-  'http://localhost:5173',     // để test local
+  'http://localhost:5173',          // cho phép local dev
 ];
 
 app.use(cors({
@@ -17,16 +19,27 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log('❌ Blocked by CORS:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
+// ✅ Bổ sung dòng này để browser preflight (OPTIONS) không bị block
+app.options('*', cors());
+
+// =====================
+// 🔹 Middleware
+// =====================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// =====================
+// 🔹 Routes
+// =====================
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/branches', require('./routes/branches'));
@@ -51,7 +64,9 @@ app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/meter-readings', require('./routes/meter-readings'));
 app.use('/api/invoice-services', require('./routes/invoice-services'));
 
-// Serve static files from React app in production
+// =====================
+// 🔹 Serve static files in production (optional)
+// =====================
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/dist')));
   app.get('*', (req, res) => {
@@ -59,18 +74,21 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Initialize database
+// =====================
+// 🔹 Initialize database
+// =====================
 const db = require('./database/db');
-db.init().then(() => {
-  app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
-    console.log(`🌐 Backend API: http://localhost:${PORT}`);
-    console.log(`📱 Frontend: http://localhost:5173`);
-    console.log(`📝 Ready to accept requests`);
+db.init()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on port ${PORT}`);
+      console.log(`🌐 Backend API: http://localhost:${PORT}`);
+      console.log(`📱 Frontend: http://localhost:5173`);
+      console.log(`📝 Ready to accept requests`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Failed to initialize database:', err);
+    console.error('Error stack:', err.stack);
+    process.exit(1);
   });
-}).catch((err) => {
-  console.error('❌ Failed to initialize database:', err);
-  console.error('Error stack:', err.stack);
-  process.exit(1);
-});
-
