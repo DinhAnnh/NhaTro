@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.DEV ? '/api' : 'http://localhost:5001/api',
+  baseURL: import.meta.env.DEV ? '/api' : 'https://nhatro.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
