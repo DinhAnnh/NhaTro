@@ -4,16 +4,16 @@
   "description": "Hệ thống quản lý nhà trọ chuyên nghiệp",
   "main": "server/index.js",
   "scripts": {
-    "postinstall": "npm run install-all",
-    "install-all": "cd client && npm install && cd ../server && npm install",
-    "build": "cd client && npm run build",
-    "start": "node server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
-    "client": "cd client && npm run dev",
-    "seed": "node server/scripts/seed.js",
-    "migrate": "node server/scripts/migrate-users.js"
-  },
+  "postinstall": "npm run install-all",
+  "install-all": "cd client && npm install && cd ../server && npm install",
+  "build": "cd client && npm run build",
+  "start": "node server/index.js",
+  "dev": "concurrently \"npm run server\" \"npm run client\"",
+  "server": "nodemon server/index.js",
+  "client": "cd client && npm run dev",
+  "seed": "node server/scripts/seed.js",
+  "migrate": "node server/scripts/migrate-users.js"
+},
   "keywords": ["nha-tro", "management", "rental"],
   "license": "ISC",
   "dependencies": {
