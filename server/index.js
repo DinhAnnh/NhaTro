@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5001;
 
 // ✅ Cấu hình CORS chuẩn cho Render + Vercel
 const allowedOrigins = [
-  'https://nha-tro-two.vercel.app',
+  'https://fe-gray-seven.vercel.app/',
   'http://localhost:5173',
 ];
 
