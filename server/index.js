@@ -6,30 +6,11 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// =====================
-// 🔹 CORS Configuration
-// =====================
-const allowedOrigins = [
-  'https://nha-tro-two.vercel.app', // domain FE trên Vercel
-  'http://localhost:5173',          // cho phép local dev
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log('❌ Blocked by CORS:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
 }));
-
-// ✅ Bổ sung dòng này để browser preflight (OPTIONS) không bị block
-app.options('*', cors());
 
 // =====================
 // 🔹 Middleware
